@@ -8,6 +8,6 @@ Os integrantes do grupo são:
 - Caio Gomes
 - Daniel Salgado
 
-<img src = "https://pbs.twimg.com/media/GWFBBV8XcAA1cBD?format=jpg&name=900x900">
+<img src = "https://pbs.twimg.com/media/GWGeuf8XkAAJ_Ju?format=jpg&name=900x900">
 
 LDDM - 2024/2
