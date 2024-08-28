@@ -8,6 +8,6 @@ Os integrantes do grupo são:
 - Caio Gomes
 - Daniel Salgado
 
-<img src = "https://x.com/VCTBRatualizado/status/1828814422607098255/photo/1">
+<img src = "https://pbs.twimg.com/media/GWFBBV8XcAA1cBD?format=jpg&name=900x900">
 
 LDDM - 2024/2
