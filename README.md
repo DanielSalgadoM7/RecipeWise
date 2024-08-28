@@ -5,7 +5,7 @@ RecipeWise é um aplicativo mobile desenvolvido nas aulas de Laboratório e Dese
 Os integrantes do grupo são:
 - André Mendes
 - Arthur Martinho
-- Daniel Salgado
 - Caio Gomes
+- Daniel Salgado
 
 LDDM - 2024/2
