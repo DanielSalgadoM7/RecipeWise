@@ -1,6 +1,6 @@
-import 'dart:io';  // Para trabalhar com o File
+import 'dart:io'; // Para trabalhar com o File
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';  // Pacote para pegar imagem
+import 'package:image_picker/image_picker.dart'; // Pacote para pegar imagem
 
 class Perfil extends StatefulWidget {
   @override
@@ -12,12 +12,18 @@ class _PerfilState extends State<Perfil> {
   String email = "TesteUsuario2024@gmail.com";
   String telefone = "98069-5572";
   String receitasPublicadas = "7";
-  String categoriaPreferida = "Doces";  // Categoria padrão
-  File? _image;  // Variável para armazenar a imagem escolhida
-  final picker = ImagePicker();  // Instância do ImagePicker
+  String categoriaPreferida = "Doces"; // Categoria padrão
+  File? _image; // Variável para armazenar a imagem escolhida
+  final picker = ImagePicker(); // Instância do ImagePicker
 
-  List<String> categorias = ["Doces", "Salgados", "Cítricos", "Picantes", "Saudáveis"]; // Opções de categorias
-  bool _isExpanded = false;  // Controla se a lista de categorias está expandida
+  List<String> categorias = [
+    "Doces",
+    "Salgados",
+    "Cítricos",
+    "Picantes",
+    "Saudáveis"
+  ]; // Opções de categorias
+  bool _isExpanded = false; // Controla se a lista de categorias está expandida
 
   // Função para pegar imagem da galeria ou câmera
   Future<void> _escolherImagem(ImageSource source) async {
@@ -47,8 +53,9 @@ class _PerfilState extends State<Perfil> {
                   CircleAvatar(
                     radius: 50.0,
                     backgroundImage: _image != null
-                        ? FileImage(_image!)  // Mostra a imagem selecionada
-                        : AssetImage('assets/profile_placeholder.png') as ImageProvider,
+                        ? FileImage(_image!) // Mostra a imagem selecionada
+                        : AssetImage('assets/profile_placeholder.png')
+                            as ImageProvider,
                   ),
                   Positioned(
                     bottom: 0,
@@ -56,9 +63,10 @@ class _PerfilState extends State<Perfil> {
                     child: PopupMenuButton<ImageSource>(
                       icon: Icon(Icons.camera_alt, color: Colors.blue),
                       onSelected: (ImageSource source) {
-                        _escolherImagem(source);  // Função para escolher imagem
+                        _escolherImagem(source); // Função para escolher imagem
                       },
-                      itemBuilder: (BuildContext context) => <PopupMenuEntry<ImageSource>>[
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuEntry<ImageSource>>[
                         const PopupMenuItem<ImageSource>(
                           value: ImageSource.gallery,
                           child: Text('Selecionar da Galeria'),
@@ -170,7 +178,8 @@ class _PerfilState extends State<Perfil> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.red,
-                  minimumSize: Size(150, 40), // Tamanho padrão do botão "Fazer cadastro"
+                  minimumSize:
+                      Size(150, 40), // Tamanho padrão do botão "Fazer cadastro"
                 ),
                 onPressed: () {
                   // Função para fazer cadastro
@@ -196,7 +205,7 @@ class _PerfilState extends State<Perfil> {
                     MaterialPageRoute(builder: (context) => SobreSiteScreen()),
                   );
                 },
-                child: Text("Sobre o Site"),
+                child: Text("Sobre o App"),
               ),
             ),
           ],
@@ -206,7 +215,8 @@ class _PerfilState extends State<Perfil> {
   }
 
   // Função para abrir diálogo de edição de texto
-  Future<void> _editarCampo(String campo, String valorAtual, Function(String) onSave) async {
+  Future<void> _editarCampo(
+      String campo, String valorAtual, Function(String) onSave) async {
     TextEditingController _controller = TextEditingController(text: valorAtual);
 
     return showDialog<void>(
@@ -245,7 +255,6 @@ class _PerfilState extends State<Perfil> {
   }
 }
 
-
 // Nova tela Sobre o Site
 class SobreSiteScreen extends StatefulWidget {
   @override
@@ -279,7 +288,7 @@ class _SobreSiteScreenState extends State<SobreSiteScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sobre o Site"),
+        title: Text("Sobre o App"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
