@@ -1,4 +1,4 @@
-package com.example.navegacao;
+package com.recipewise.main;
 
 import io.flutter.embedding.android.FlutterActivity;
 

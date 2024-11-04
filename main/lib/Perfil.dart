@@ -290,12 +290,11 @@ class _SobreSiteScreenState extends State<SobreSiteScreen>
       appBar: AppBar(
         title: Text("Sobre o App"),
       ),
-      body: Padding(
+      body: SingleChildScrollView( // Adicionado para rolagem automática
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Imagem com efeito de pulsação
             Center(
               child: ScaleTransition(
                 scale: _scaleAnimation,

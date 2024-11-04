@@ -73,16 +73,16 @@ class _PreviewReceitaState extends State<PreviewReceita> {
               onTapUp: (_) => _onButtonRelease(),
               onTapCancel: () => _onButtonRelease(),
               child: AnimatedContainer(
-                duration: Duration(milliseconds: 100), // Duração da animação
+                duration: const Duration(milliseconds: 100), // Duração da animação
                 curve: Curves.easeInOut, // Curva da animação
                 transform: Matrix4.identity()..scale(_buttonScale), // Aplica a escala
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
                   decoration: BoxDecoration(
                     color: Colors.red, // Cor de fundo do botão
                     borderRadius: BorderRadius.circular(8.0), // Bordas arredondadas
                   ),
-                  child: Text(
+                  child: const Text(
                     "Publicar Receita",
                     style: TextStyle(
                       color: Colors.white, // Cor do texto
