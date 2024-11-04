@@ -15,7 +15,7 @@ class _DetalheListaScreenState extends State<DetalheListaScreen> {
 
   void _adicionarItem() async {
     if (_controller.text.isNotEmpty) {
-      await ListaSQLHelper().createItem(widget.lista['id'], _controller.text, false, 1);
+      await ListaSQLHelper.createItem(widget.lista['id'], _controller.text, false, 1);
       _controller.clear();
       setState(() {}); // Recarrega a lista de itens
     }
@@ -25,19 +25,18 @@ class _DetalheListaScreenState extends State<DetalheListaScreen> {
     var item = widget.lista['itens'][index];
     int novaQuantidade = (item['quantidade'] + delta).clamp(1, 99);
 
-    await ListaSQLHelper().updateItem(item['id'], item['marcado'] == 1);
-    await ListaSQLHelper().updateItemQuantidade(item['id'], novaQuantidade);
+    await ListaSQLHelper.updateItem(item['id'],novaQuantidade ,item['nome'], item['marcado']! == 1);
     setState(() {}); // Recarrega a lista de itens
   }
 
   void _removerItem(int index) async {
     var item = widget.lista['itens'][index];
-    await ListaSQLHelper().deleteItem(item['id']);
+    await ListaSQLHelper.deleteItem(item['id']);
     setState(() {}); // Recarrega a lista de itens
   }
 
   Future<List<Map<String, dynamic>>> _carregarItens() async {
-    return await ListaSQLHelper().getItens(widget.lista['id']);
+    return await ListaSQLHelper.getItens(widget.lista['id']);
   }
 
   @override
@@ -54,15 +53,15 @@ class _DetalheListaScreenState extends State<DetalheListaScreen> {
   Color _getColorFromId(int id) {
     switch (id) {
       case 0:
-        return Colors.pink[200]!;
+        return Color(0xFFF48FB1);
       case 1:
-        return Colors.blue[200]!;
+        return Color(0xFF90CAF9);
       case 2:
-        return Colors.green[200]!;
+        return Color(0xFFA5D6A7);
       case 3:
-        return Colors.purple[200]!;
+        return Color(0xFFCE93D8);
       case 4:
-        return Colors.orange[200]!;
+        return Color(0xFFFFCC80);
       default:
         return Colors.black; // Cor padrão se o ID não for válido
     }
@@ -72,7 +71,8 @@ class _DetalheListaScreenState extends State<DetalheListaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: _getColorFromId(widget.lista['cor']), // Usar a cor da lista
+        //color: Color(int.parse(lista['cor'])),
+        backgroundColor: Color(int.parse(widget.lista['cor'])), // Usar a cor da lista
         title: Text(widget.lista['nome']),
       ),
       body: Column(
@@ -123,8 +123,11 @@ class _DetalheListaScreenState extends State<DetalheListaScreen> {
                           value: item['marcado'] == 1,
                           onChanged: (bool? valor) {
                             setState(() {
-                              item['marcado'] = valor! ? 1 : 0;
-                              ListaSQLHelper().updateItem(item['id'], item['marcado'] == 1);
+                              // Criar uma cópia do item antes de modificar
+                              var novoItem = Map<String, dynamic>.from(item);
+                              novoItem['marcado'] = valor! ? 1 : 0; // Atualiza o estado marcado
+                              // Atualizar o banco de dados
+                              ListaSQLHelper.updateItem(novoItem['id'], novoItem['quantidade'], novoItem['nome'], novoItem['marcado'] == 1);
                             });
                           },
                         ),

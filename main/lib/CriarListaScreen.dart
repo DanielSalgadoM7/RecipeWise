@@ -27,11 +27,11 @@ class _CriarListaScreenState extends State<CriarListaScreen> {
     if (_nomeController.text.isNotEmpty) {
       Map<String, dynamic> novaLista = {
         'nome': _nomeController.text,
-        'corId': _corSelecionadaId, // Armazenar o ID da cor
+        'cor': coresDisponiveis[_corSelecionadaId].value,
       };
 
       // Insira a nova lista no banco de dados
-      await ListaSQLHelper().createLista(novaLista['nome'], novaLista['corId']);
+      await ListaSQLHelper.createLista(novaLista['nome'], novaLista['cor']);
 
       // Chama o callback para notificar que uma nova lista foi criada
       widget.onListaCriada(novaLista);

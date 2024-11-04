@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'Lista.dart';
 import 'PrimeiraTela.dart';
-import 'Receitas.dart'; // Importar a página de Receitas
-import 'Perfil.dart'; // Importar a página de Perfil
-import 'Publicar.dart'; // Importar a página de Publicar
+import 'Receitas.dart';
+import 'Perfil.dart';
+import 'Publicar.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart'; // Importar o Convex Bottom Bar
 
 List<Map<String, dynamic>> listaDeCompras = [];

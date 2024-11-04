@@ -18,7 +18,7 @@ class _ListaScreenState extends State<ListaScreen> {
   }
 
   Future<void> _carregarListas() async {
-    final dataListas = await ListaSQLHelper().getListas();
+    final dataListas = await ListaSQLHelper.getListas();
     setState(() {
       listas = dataListas;
     });
@@ -38,27 +38,23 @@ class _ListaScreenState extends State<ListaScreen> {
   }
 
   void _toggleItemStatus(int listaIndex, int itemIndex) async {
-    var item = listas[listaIndex]['itens'][itemIndex];
-    await ListaSQLHelper().updateItem(item['id'], !item['marcado']);
-    _carregarListas(); // Recarrega a lista após a atualização
-  }
+    if (listaIndex < 0 || listaIndex >= listas.length) return;
 
-  // Método para converter o ID da cor em Color
-  Color _getColorFromId(int id) {
-    switch (id) {
-      case 0:
-        return Colors.pink[200]!;
-      case 1:
-        return Colors.blue[200]!;
-      case 2:
-        return Colors.green[200]!;
-      case 3:
-        return Colors.purple[200]!;
-      case 4:
-        return Colors.orange[200]!;
-      default:
-        return Colors.black; // Cor padrão se o ID não for válido
-    }
+    var lista = listas[listaIndex];
+
+    // Verifica se 'itens' não é nulo
+    if (lista['itens'] == null || itemIndex < 0 || itemIndex >= lista['itens'].length) return;
+
+    var item = lista['itens'][itemIndex];
+
+    await ListaSQLHelper.updateItem(
+      item['id'],
+      item['quantidade'],
+      item['nome'],
+      item['marcado'] == 0 ? true : false,
+    );
+
+    _carregarListas(); // Recarrega a lista após a atualização
   }
 
   @override
@@ -85,7 +81,7 @@ class _ListaScreenState extends State<ListaScreen> {
           var lista = listas[listaIndex];
           return Card(
             margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            color: _getColorFromId(lista['cor']), // Converte o ID da cor para Color
+            color: Color(int.parse(lista['cor'])), // Converte o ID da cor para Color
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),
@@ -106,7 +102,7 @@ class _ListaScreenState extends State<ListaScreen> {
                   SizedBox(height: 8),
                   // Exibir itens da lista com checkboxes
                   FutureBuilder<List<Map<String, dynamic>>>(
-                    future: ListaSQLHelper().getItens(lista['id']),
+                    future: ListaSQLHelper.getItens(lista['id']),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
@@ -115,7 +111,7 @@ class _ListaScreenState extends State<ListaScreen> {
                         return Text('Erro ao carregar itens');
                       }
 
-                      var itens = snapshot.data!;
+                      var itens = snapshot.data ?? [];
                       return ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
@@ -123,12 +119,16 @@ class _ListaScreenState extends State<ListaScreen> {
                         itemBuilder: (context, itemIndex) {
                           var item = itens[itemIndex];
                           return Container(
-                            color: _getColorFromId(lista['cor']).withOpacity(0.3),
+                            color: Color(int.parse(lista['cor'])),
                             child: ListTile(
                               leading: Checkbox(
                                 value: item['marcado'] == 1,
                                 onChanged: (bool? value) {
-                                  _toggleItemStatus(listaIndex, itemIndex);
+                                  setState(() {
+                                    var novoItem = Map<String, dynamic>.from(item);
+                                    novoItem['marcado'] = value! ? 1 : 0; // Atualiza a interface do usuário
+                                    _toggleItemStatus(listaIndex, itemIndex); // Atualiza no banco de dados
+                                  });
                                 },
                               ),
                               title: Text(
@@ -158,8 +158,7 @@ class _ListaScreenState extends State<ListaScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              DetalheListaScreen(lista: lista),
+                          builder: (context) => DetalheListaScreen(lista: lista),
                         ),
                       );
                     },
