@@ -47,14 +47,10 @@ class _PrimeiraTelaState extends State<PrimeiraTela> {
   }
 
   // Funções para navegação
-  void verTelaBloqueio() {
+  void _navegarParaFavoritos() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => Telabloqueio(
-
-        ),
-      ),
+      MaterialPageRoute(builder: (context) => Favoritos("Tela de Favoritos")),// Chama a tela Receitas
     );
   }
 
@@ -146,7 +142,7 @@ class _PrimeiraTelaState extends State<PrimeiraTela> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildIconButton(Icons.star, "Favoritos", verTelaBloqueio),
+                  _buildIconButton(Icons.star, "Favoritos", _navegarParaFavoritos),
                   _buildIconButton(Icons.receipt, "Receitas", _navegarParaReceitas), // Botão que navega para Receitas
                   _buildIconButton(Icons.lightbulb, "Dicas", _navegarParaDicas),
                   _buildIconButton(Icons.category, "Categorias", _navegarParaCategorias),

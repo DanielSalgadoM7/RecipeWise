@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'TelaCadastro.dart';  // Importe a tela de cadastro
+import 'TelaLogin.dart';     // Importe a tela de login
 
 class Telabloqueio extends StatelessWidget {
   @override
@@ -50,7 +52,10 @@ class Telabloqueio extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   // Navegar para a tela de cadastro
-                  Navigator.pushNamed(context, '/cadastro');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TelaCadastro()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red, // Cor de fundo do botão
@@ -73,7 +78,10 @@ class Telabloqueio extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   // Navegar para a tela de login
-                  Navigator.pushNamed(context, '/login');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TelaLogin()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red, // Cor de fundo do botão

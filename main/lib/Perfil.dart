@@ -1,6 +1,8 @@
 import 'dart:io'; // Para trabalhar com o File
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart'; // Pacote para pegar imagem
+import 'TelaBloqueio.dart'; // Assumindo que o arquivo 'TelaBloqueio.dart' esteja no mesmo diretório
+
 
 class Perfil extends StatefulWidget {
   @override
@@ -8,11 +10,11 @@ class Perfil extends StatefulWidget {
 }
 
 class _PerfilState extends State<Perfil> {
-  String nome = "Usuário Teste";
-  String email = "TesteUsuario2024@gmail.com";
-  String telefone = "98069-5572";
-  String receitasPublicadas = "7";
-  String categoriaPreferida = "Doces"; // Categoria padrão
+  String nome = "xxxxxxx";
+  String email = "xxxxxxxxx@gmail.com";
+  String telefone = "0000-0000";
+  String receitasPublicadas = "0";
+  String categoriaPreferida = "nenhuma"; // Categoria padrão
   File? _image; // Variável para armazenar a imagem escolhida
   final picker = ImagePicker(); // Instância do ImagePicker
 
@@ -182,9 +184,13 @@ class _PerfilState extends State<Perfil> {
                       Size(150, 40), // Tamanho padrão do botão "Fazer cadastro"
                 ),
                 onPressed: () {
-                  // Função para fazer cadastro
+                  print("Botão pressionado");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Telabloqueio()),
+                  );
                 },
-                child: Text("Fazer cadastro"),
+                child: Text("Cria Conta"),
               ),
             ),
 
