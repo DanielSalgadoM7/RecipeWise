@@ -15,24 +15,11 @@ class _DetalheListaScreenState extends State<DetalheListaScreen> {
 
   void _adicionarItem() async {
     if (_controller.text.isNotEmpty) {
-      await ListaSQLHelper.createItem(widget.lista['id'], _controller.text, false, 1);
+      await ListaSQLHelper.createItem(
+          widget.lista['id'], _controller.text, false, 1);
       _controller.clear();
       setState(() {}); // Recarrega a lista de itens
     }
-  }
-
-  void _atualizarQuantidade(int index, int delta) async {
-    var item = widget.lista['itens'][index];
-    int novaQuantidade = (item['quantidade'] + delta).clamp(1, 99);
-
-    await ListaSQLHelper.updateItem(item['id'],novaQuantidade ,item['nome'], item['marcado']! == 1);
-    setState(() {}); // Recarrega a lista de itens
-  }
-
-  void _removerItem(int index) async {
-    var item = widget.lista['itens'][index];
-    await ListaSQLHelper.deleteItem(item['id']);
-    setState(() {}); // Recarrega a lista de itens
   }
 
   Future<List<Map<String, dynamic>>> _carregarItens() async {
@@ -44,7 +31,8 @@ class _DetalheListaScreenState extends State<DetalheListaScreen> {
     super.initState();
     _carregarItens().then((itens) {
       setState(() {
-        widget.lista['itens'] = itens; // Atualiza a lista de itens com os dados do banco
+        widget.lista['itens'] =
+            itens; // Atualiza a lista de itens com os dados do banco
       });
     });
   }
@@ -72,7 +60,8 @@ class _DetalheListaScreenState extends State<DetalheListaScreen> {
     return Scaffold(
       appBar: AppBar(
         //color: Color(int.parse(lista['cor'])),
-        backgroundColor: Color(int.parse(widget.lista['cor'])), // Usar a cor da lista
+        backgroundColor:
+            Color(int.parse(widget.lista['cor'])), // Usar a cor da lista
         title: Text(widget.lista['nome']),
       ),
       body: Column(
@@ -116,7 +105,9 @@ class _DetalheListaScreenState extends State<DetalheListaScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      color: item['marcado'] == 1 ? Colors.grey[300] : Colors.white,
+                      color: item['marcado'] == 1
+                          ? Colors.grey[300]
+                          : Colors.white,
                       child: ListTile(
                         contentPadding: EdgeInsets.all(8),
                         leading: Checkbox(
@@ -125,9 +116,14 @@ class _DetalheListaScreenState extends State<DetalheListaScreen> {
                             setState(() {
                               // Criar uma cópia do item antes de modificar
                               var novoItem = Map<String, dynamic>.from(item);
-                              novoItem['marcado'] = valor! ? 1 : 0; // Atualiza o estado marcado
+                              novoItem['marcado'] =
+                                  valor! ? 1 : 0; // Atualiza o estado marcado
                               // Atualizar o banco de dados
-                              ListaSQLHelper.updateItem(novoItem['id'], novoItem['quantidade'], novoItem['nome'], novoItem['marcado'] == 1);
+                              ListaSQLHelper.updateItem(
+                                  novoItem['id'],
+                                  novoItem['quantidade'],
+                                  novoItem['nome'],
+                                  novoItem['marcado'] == 1);
                             });
                           },
                         ),
@@ -136,7 +132,9 @@ class _DetalheListaScreenState extends State<DetalheListaScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: item['marcado'] == 1 ? Colors.grey[600] : Colors.black,
+                            color: item['marcado'] == 1
+                                ? Colors.grey[600]
+                                : Colors.black,
                           ),
                         ),
                         trailing: Row(
@@ -144,20 +142,35 @@ class _DetalheListaScreenState extends State<DetalheListaScreen> {
                           children: [
                             IconButton(
                               icon: Icon(Icons.remove),
-                              onPressed: () => _atualizarQuantidade(index, -1),
+                              onPressed: () => setState(() {
+                                ListaSQLHelper.updateItem(
+                                    item['id'],
+                                    item['quantidade'] - 1,
+                                    item['nome'],
+                                    item['marcado'] == 1);
+                              }),
                             ),
                             Text(
                               item['quantidade'].toString(),
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             IconButton(
                               icon: Icon(Icons.add),
-                              onPressed: () => _atualizarQuantidade(index, 1),
+                              onPressed: () => setState(() {
+                                  ListaSQLHelper.updateItem(
+                                  item['id'],
+                                  item['quantidade'] + 1,
+                                  item['nome'],
+                                  item['marcado'] == 1);
+                              }),
                             ),
                             IconButton(
                               icon: Icon(Icons.delete),
                               color: Colors.red,
-                              onPressed: () => _removerItem(index),
+                              onPressed: () => setState(() {
+                                ListaSQLHelper.deleteItem(item['id']);
+                              }),
                             ),
                           ],
                         ),
