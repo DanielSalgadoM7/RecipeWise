@@ -3,9 +3,11 @@ import 'main.dart';
 import 'Lista.dart';
 import 'TelaBusca.dart';
 import 'FavoritosTela.dart';
+import 'TelaBloqueio.dart';
 import 'Receitas.dart'; // Certifique-se de que o arquivo Receitas.dart esteja importado corretamente
 import 'DicasTela.dart';
 import 'CategoriasTela.dart';
+import 'SqlHelper/Lista_SQLHelper.dart'; // Importe o helper do banco de dados
 
 int _paginaAtual = 0; // Controla qual tela será exibida
 
@@ -45,10 +47,14 @@ class _PrimeiraTelaState extends State<PrimeiraTela> {
   }
 
   // Funções para navegação
-  void _navegarParaFavoritos() {
+  void verTelaBloqueio() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Favoritos("Tela de Favoritos")),
+      MaterialPageRoute(
+        builder: (context) => Telabloqueio(
+
+        ),
+      ),
     );
   }
 
@@ -140,7 +146,7 @@ class _PrimeiraTelaState extends State<PrimeiraTela> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildIconButton(Icons.star, "Favoritos", _navegarParaFavoritos),
+                  _buildIconButton(Icons.star, "Favoritos", verTelaBloqueio),
                   _buildIconButton(Icons.receipt, "Receitas", _navegarParaReceitas), // Botão que navega para Receitas
                   _buildIconButton(Icons.lightbulb, "Dicas", _navegarParaDicas),
                   _buildIconButton(Icons.category, "Categorias", _navegarParaCategorias),

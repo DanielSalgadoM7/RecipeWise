@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'SqlHelper/Lista_SQLHelper.dart'; // Importe seu SQLHelper
+import 'SqlHelper/Lista_SQLHelper.dart';
 
 class CriarListaScreen extends StatefulWidget {
   final Function(Map<String, dynamic>) onListaCriada;
@@ -12,9 +12,8 @@ class CriarListaScreen extends StatefulWidget {
 
 class _CriarListaScreenState extends State<CriarListaScreen> {
   TextEditingController _nomeController = TextEditingController();
-  int _corSelecionadaId = 0; // ID da cor selecionada
+  int _corSelecionadaId = 0;
 
-  // Mapeamento das cores com seus IDs
   final List<Color> coresDisponiveis = [
     Color(0xFFF48FB1),
     Color(0xFF90CAF9),
@@ -30,7 +29,7 @@ class _CriarListaScreenState extends State<CriarListaScreen> {
         'cor': coresDisponiveis[_corSelecionadaId].value,
       };
 
-      // Insira a nova lista no banco de dados
+      // Cria a nova lista no banco de dados
       await ListaSQLHelper.createLista(novaLista['nome'], novaLista['cor']);
 
       // Chama o callback para notificar que uma nova lista foi criada
@@ -60,7 +59,7 @@ class _CriarListaScreenState extends State<CriarListaScreen> {
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      _corSelecionadaId = index; // Altera o ID da cor selecionada
+                      _corSelecionadaId = index;
                     });
                   },
                   child: CircleAvatar(

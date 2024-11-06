@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:main/TelaBloqueio.dart%20';
 import 'Lista.dart';
 import 'PrimeiraTela.dart';
 import 'Receitas.dart';
@@ -21,6 +22,21 @@ class Inicio extends StatefulWidget {
 
   @override
   _InicioState createState() => _InicioState();
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Meu App',
+      initialRoute: '/', // Página inicial do app
+      routes: {
+        '/': (context) => PrimeiraTela(), // Defina sua tela principal aqui
+        '/telabloqueio': (context) => Telabloqueio(), // Defina a rota para TelaBloqueio
+        // Outras rotas que você possa ter
+      },
+    );
+  }
 }
 
 class _InicioState extends State<Inicio> {
