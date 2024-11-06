@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Perfil.dart';
 
 class TelaLogin extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -30,16 +31,17 @@ class TelaLogin extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start, // Alinha o conteúdo ao topo
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: 100),
             // Título de Login
             Text(
               "Entrar no App",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20), // Menor espaçamento após o título
 
             // Campo para e-mail
             TextField(
@@ -80,7 +82,10 @@ class TelaLogin extends StatelessWidget {
                   // Aqui você pode validar o login (exemplo: verificar se os dados estão corretos)
 
                   // Navegar para a tela principal após o login ser bem-sucedido
-                  Navigator.pop(context); // Voltar para a tela anterior (Telabloqueio)
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => Perfil()), // Substitui a tela de login pela tela de perfil
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red, // Cor de fundo do botão
@@ -101,4 +106,3 @@ class TelaLogin extends StatelessWidget {
     );
   }
 }
-

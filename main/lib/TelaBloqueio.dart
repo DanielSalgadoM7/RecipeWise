@@ -29,16 +29,18 @@ class Telabloqueio extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start, // Alinha o conteúdo ao topo
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: 100), // Espaço adicional para a margem superior
+
             // Mensagem de orientação
             Text(
               "OPS... Vimos que você ainda não se cadastrou ou não está logado :(",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 5),  // Menor espaço entre os textos
             Text(
               "Para continuar usando nosso APP realize alguma das opções abaixo!",
               style: TextStyle(fontSize: 14),
@@ -102,3 +104,4 @@ class Telabloqueio extends StatelessWidget {
     );
   }
 }
+

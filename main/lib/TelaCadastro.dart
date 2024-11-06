@@ -32,16 +32,17 @@ class TelaCadastro extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start, // Alinha o conteúdo no topo
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: 100),
             // Título de Cadastro
             Text(
               "Cadastro de Usuário",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20), // Menor espaçamento após o título
 
             // Campo para nome
             TextField(

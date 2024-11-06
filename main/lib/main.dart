@@ -19,7 +19,6 @@ void main() {
 
 class Inicio extends StatefulWidget {
   Inicio({Key? key}) : super(key: key);
-
   @override
   _InicioState createState() => _InicioState();
 }
@@ -59,6 +58,7 @@ class _InicioState extends State<Inicio> {
       _indiceAtual = 2; // Muda para a página de Receitas
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
