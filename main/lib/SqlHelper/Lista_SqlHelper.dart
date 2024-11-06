@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart' as sql;
-import 'package:path/path.dart';
 
 class ListaSQLHelper {
   static Future<void> criarTabelas(sql.Database db) async {
