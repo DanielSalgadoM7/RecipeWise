@@ -1,11 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:main/TelaBloqueio.dart%20';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:main/TelaBloqueio.dart';
 import 'Lista.dart';
 import 'PrimeiraTela.dart';
 import 'Receitas.dart';
 import 'Perfil.dart';
 import 'Publicar.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart'; // Importar o Convex Bottom Bar
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
 List<Map<String, dynamic>> listaDeCompras = [];
 final GlobalKey<_InicioState> _inicioKey = GlobalKey<_InicioState>();
@@ -13,7 +15,7 @@ final GlobalKey<_InicioState> _inicioKey = GlobalKey<_InicioState>();
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: Inicio(key: _inicioKey), // Passando a chave para o Inicio
+    home: Inicio(key: _inicioKey),
   ));
 }
 
@@ -28,11 +30,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Meu App',
-      initialRoute: '/', // Página inicial do app
+      initialRoute: '/',
       routes: {
-        '/': (context) => PrimeiraTela(), // Defina sua tela principal aqui
-        '/telabloqueio': (context) => Telabloqueio(), // Defina a rota para TelaBloqueio
-        // Outras rotas que você possa ter
+        '/': (context) => PrimeiraTela(),
+        '/telabloqueio': (context) => Telabloqueio(),
       },
     );
   }
@@ -40,12 +41,30 @@ class MyApp extends StatelessWidget {
 
 class _InicioState extends State<Inicio> {
   int _indiceAtual = 0;
+  File? _profileImage; // Variável para armazenar a imagem do perfil
+
   final List<Widget> _telas = [
     PrimeiraTela(),
-    Publicar(), // Tela de Publicar
+    Publicar(),
     Receitas(),
-    ListaScreen(), // Tela de Lista
+    ListaScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImage(); // Carrega a imagem do perfil ao iniciar
+  }
+
+  Future<void> _loadProfileImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? path = prefs.getString('imagem_perfil');
+    if (path != null) {
+      setState(() {
+        _profileImage = File(path);
+      });
+    }
+  }
 
   void onTabTapped(int index) {
     setState(() {
@@ -55,22 +74,20 @@ class _InicioState extends State<Inicio> {
 
   void mudarParaReceitas() {
     setState(() {
-      _indiceAtual = 2; // Muda para a página de Receitas
+      _indiceAtual = 2;
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    // Defina o nome do usuário aqui
-    String usuario = "Usuário"; // Você pode mudar isso para um nome dinâmico
+    String usuario = "Usuário";
 
     return Scaffold(
       appBar: AppBar(
         title: InkWell(
           onTap: () {
             setState(() {
-              _indiceAtual = 0; // Volta para a tela inicial
+              _indiceAtual = 0;
             });
           },
           child: SizedBox(
@@ -92,26 +109,35 @@ class _InicioState extends State<Inicio> {
                   "Olá, $usuario!",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18, // Tamanho da fonte
+                    fontSize: 18,
                   ),
                 ),
               ),
               IconButton(
                 icon: SizedBox(
-                  width: 56, // Largura do botão
-                  height: 56, // Altura do botão
+                  width: 56,
+                  height: 56,
                   child: Container(
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle, // Faz com que o fundo seja circular
-                      color: Colors.white, // Cor de fundo
+                      shape: BoxShape.circle,
+                      color: Colors.white,
                       border: Border.all(
-                          color: Color(0xFF942B2B), width: 2), // Borda vermelha fina
+                          color: Color(0xFF942B2B), width: 2),
                     ),
-                    child: Center( // Centraliza o ícone
-                      child: Icon(
+                    child: Center(
+                      child: _profileImage != null
+                          ? ClipOval(
+                        child: Image.file(
+                          _profileImage!,
+                          width: 50, // Largura da imagem de perfil
+                          height: 70, // Altura da imagem de perfil
+                          fit: BoxFit.cover, // Ajusta a imagem para cobrir o espaço
+                        ),
+                      )
+                          : Icon(
                         Icons.person,
-                        color: Color(0xFF942B2B), // Cor do ícone
-                        size: 30, // Tamanho do ícone
+                        color: Color(0xFF942B2B),
+                        size: 30,
                       ),
                     ),
                   ),
@@ -119,8 +145,11 @@ class _InicioState extends State<Inicio> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Perfil()), // Navega para a tela de Perfil
-                  );
+                    MaterialPageRoute(builder: (context) => Perfil()),
+                  ).then((_) {
+                    // Atualiza a imagem de perfil ao retornar para a tela inicial
+                    _loadProfileImage();
+                  });
                 },
               ),
             ],
@@ -129,18 +158,17 @@ class _InicioState extends State<Inicio> {
       ),
       body: _telas[_indiceAtual],
 
-      // Usando ConvexAppBar no lugar do BottomNavigationBar
       bottomNavigationBar: ConvexAppBar(
-        style: TabStyle.react, // Define o estilo do ConvexAppBar
-        backgroundColor: Color(0xFF942B2B), // Cor de fundo
+        style: TabStyle.react,
+        backgroundColor: Color(0xFF942B2B),
         items: [
           TabItem(icon: Icons.home, title: "Início"),
           TabItem(icon: Icons.add_circle, title: "Publicar"),
           TabItem(icon: Icons.fastfood, title: "Receitas"),
           TabItem(icon: Icons.list_alt, title: "Lista"),
         ],
-        initialActiveIndex: _indiceAtual, // Índice inicial ativo
-        onTap: onTabTapped, // Função para manipular as mudanças de aba
+        initialActiveIndex: _indiceAtual,
+        onTap: onTabTapped,
       ),
     );
   }

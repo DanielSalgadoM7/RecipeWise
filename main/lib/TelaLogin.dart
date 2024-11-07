@@ -1,24 +1,52 @@
 import 'package:flutter/material.dart';
-import 'Perfil.dart';
+import 'SqlHelper/Usuario_SqlHelper.dart'; // Importe a classe UsuarioSQLHelper
+import 'Perfil.dart'; // Importe a tela de perfil
 
 class TelaLogin extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController senhaController = TextEditingController();
 
+  void fazerLogin(BuildContext context) async {
+    String email = emailController.text.trim();
+    String senha = senhaController.text.trim();
+
+    // Verificar se os campos estão preenchidos
+    if (email.isEmpty || senha.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Por favor, preencha todos os campos')),
+      );
+      return;
+    }
+
+    // Consultar o banco para verificar o login
+    final usuario = await UsuarioSQLHelper.getUsuarioByEmailSenha(email, senha);
+    if (usuario != null) {
+      // Login bem-sucedido, navega para a tela de perfil
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Perfil()), // Tela para onde o usuário será redirecionado
+      );
+    } else {
+      // Mostrar mensagem de erro se o login falhar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('E-mail ou senha incorretos')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Barra de navegação com fundo vermelho
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(120), // Altura maior da AppBar
+        preferredSize: Size.fromHeight(120),
         child: AppBar(
-          backgroundColor: Colors.red.shade700, // Cor de fundo vermelha
-          elevation: 0, // Retira a sombra da barra
+          backgroundColor: Colors.red.shade700,
+          elevation: 0,
           flexibleSpace: Padding(
-            padding: const EdgeInsets.only(top: 40.0), // Ajuste a altura do ícone
+            padding: const EdgeInsets.only(top: 40.0),
             child: Center(
               child: Image.asset(
-                'assets/images/LOGOicon.jpg', // Caminho para a imagem nos arquivos do projeto
+                'assets/images/LOGOicon.jpg',
                 width: 80,
                 height: 80,
               ),
@@ -26,24 +54,19 @@ class TelaLogin extends StatelessWidget {
           ),
         ),
       ),
-
-      // Conteúdo principal da tela
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start, // Alinha o conteúdo ao topo
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 100),
-            // Título de Login
             Text(
               "Entrar no App",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20), // Menor espaçamento após o título
-
-            // Campo para e-mail
+            SizedBox(height: 20),
             TextField(
               controller: emailController,
               decoration: InputDecoration(
@@ -55,8 +78,6 @@ class TelaLogin extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-
-            // Campo para senha
             TextField(
               controller: senhaController,
               obscureText: true,
@@ -69,26 +90,12 @@ class TelaLogin extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-
-            // Botão de Login
             SizedBox(
-              width: double.infinity, // Garante que o botão ocupe toda a largura
+              width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  // Lógica de login (pode incluir validação de email e senha)
-                  String email = emailController.text;
-                  String senha = senhaController.text;
-
-                  // Aqui você pode validar o login (exemplo: verificar se os dados estão corretos)
-
-                  // Navegar para a tela principal após o login ser bem-sucedido
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => Perfil()), // Substitui a tela de login pela tela de perfil
-                  );
-                },
+                onPressed: () => fazerLogin(context),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, // Cor de fundo do botão
+                  backgroundColor: Colors.red,
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),

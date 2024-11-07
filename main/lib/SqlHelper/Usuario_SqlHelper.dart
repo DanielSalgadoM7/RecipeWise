@@ -43,6 +43,17 @@ class UsuarioSQLHelper {
     );
   }
 
+  static Future<Map<String, dynamic>?> getUsuarioByEmailSenha(String email, String senha) async {
+    final db = await UsuarioSQLHelper.db();
+    final resultado = await db.query(
+      'usuarios',
+      where: 'email = ? AND senha = ?',
+      whereArgs: [email, senha],
+      limit: 1,
+    );
+    return resultado.isNotEmpty ? resultado.first : null;
+  }
+
   static Future<int> createUsuario(String nome, String email, String senha, String foto) async {
     final db = await UsuarioSQLHelper.db();
     final dados = {'nome': nome, 'email': email,'senha': senha, 'foto': foto};

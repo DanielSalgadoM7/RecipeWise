@@ -1,25 +1,53 @@
 import 'package:flutter/material.dart';
+import 'SqlHelper/Usuario_SqlHelper.dart'; // Importe a classe UsuarioSQLHelper
 
 class TelaCadastro extends StatelessWidget {
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController telefoneController = TextEditingController();
   final TextEditingController senhaController = TextEditingController();
+
+  void cadastrarUsuario(BuildContext context) async {
+    String nome = nomeController.text.trim();
+    String email = emailController.text.trim();
+    String senha = senhaController.text.trim();
+
+    // Verificar se os campos estão preenchidos
+    if (nome.isEmpty || email.isEmpty || senha.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Por favor, preencha todos os campos')),
+      );
+      return;
+    }
+
+    try {
+      // Chamar o método createUsuario
+      int id = await UsuarioSQLHelper.createUsuario(nome, email, senha, '');
+      if (id > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Cadastro realizado com sucesso!')),
+        );
+        Navigator.pop(context); // Voltar para a tela anterior
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao cadastrar usuário: ${e.toString()}')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Barra de navegação com fundo vermelho
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(120), // Altura maior da AppBar
+        preferredSize: Size.fromHeight(120),
         child: AppBar(
-          backgroundColor: Colors.red.shade700, // Cor de fundo vermelha
-          elevation: 0, // Retira a sombra da barra
+          backgroundColor: Colors.red.shade700,
+          elevation: 0,
           flexibleSpace: Padding(
-            padding: const EdgeInsets.only(top: 40.0), // Ajuste a altura do ícone
+            padding: const EdgeInsets.only(top: 40.0),
             child: Center(
               child: Image.asset(
-                'assets/images/LOGOicon.jpg', // Caminho para a imagem nos arquivos do projeto
+                'assets/images/LOGOicon.jpg',
                 width: 80,
                 height: 80,
               ),
@@ -27,24 +55,19 @@ class TelaCadastro extends StatelessWidget {
           ),
         ),
       ),
-
-      // Conteúdo principal da tela
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start, // Alinha o conteúdo no topo
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 100),
-            // Título de Cadastro
             Text(
               "Cadastro de Usuário",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20), // Menor espaçamento após o título
-
-            // Campo para nome
+            SizedBox(height: 20),
             TextField(
               controller: nomeController,
               decoration: InputDecoration(
@@ -56,8 +79,6 @@ class TelaCadastro extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-
-            // Campo para e-mail
             TextField(
               controller: emailController,
               decoration: InputDecoration(
@@ -69,22 +90,6 @@ class TelaCadastro extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-
-            // Campo para telefone
-            TextField(
-              controller: telefoneController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                labelText: 'Telefone',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                prefixIcon: Icon(Icons.phone),
-              ),
-            ),
-            SizedBox(height: 10),
-
-            // Campo para senha
             TextField(
               controller: senhaController,
               obscureText: true,
@@ -97,25 +102,12 @@ class TelaCadastro extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-
-            // Botão de Cadastro
             SizedBox(
-              width: double.infinity, // Garante que o botão ocupe toda a largura
+              width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  // Lógica para concluir o cadastro (pode incluir validações)
-                  String nome = nomeController.text;
-                  String email = emailController.text;
-                  String telefone = telefoneController.text;
-                  String senha = senhaController.text;
-
-                  // Aqui você pode incluir validações e persistência dos dados
-
-                  // Navegar de volta para a tela principal após o cadastro
-                  Navigator.pop(context); // Voltar para a tela anterior (Telabloqueio)
-                },
+                onPressed: () => cadastrarUsuario(context),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, // Cor de fundo do botão
+                  backgroundColor: Colors.red,
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),

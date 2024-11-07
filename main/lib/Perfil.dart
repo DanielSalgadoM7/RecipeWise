@@ -1,8 +1,8 @@
-import 'dart:io'; // Para trabalhar com o File
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart'; // Pacote para pegar imagem
-import 'TelaBloqueio.dart'; // Assumindo que o arquivo 'TelaBloqueio.dart' esteja no mesmo diretório
-
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'TelaBloqueio.dart';
 
 class Perfil extends StatefulWidget {
   @override
@@ -28,13 +28,38 @@ class _PerfilState extends State<Perfil> {
   bool _isExpanded = false; // Controla se a lista de categorias está expandida
 
   // Função para pegar imagem da galeria ou câmera
+  @override
+  void initState() {
+    super.initState();
+    _loadImage(); // Carregar a imagem salva ao inicializar a tela
+  }
+
+  // Função para pegar imagem da galeria ou câmera
   Future<void> _escolherImagem(ImageSource source) async {
     final pickedFile = await picker.pickImage(source: source);
-    setState(() {
-      if (pickedFile != null) {
+    if (pickedFile != null) {
+      setState(() {
         _image = File(pickedFile.path);
-      }
-    });
+      });
+      await _saveImagePath(pickedFile.path); // Salvar o caminho da imagem
+    }
+  }
+
+  // Salvar o caminho da imagem no SharedPreferences
+  Future<void> _saveImagePath(String path) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('imagem_perfil', path);
+  }
+
+  // Carregar a imagem salva ao iniciar a tela
+  Future<void> _loadImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? path = prefs.getString('imagem_perfil');
+    if (path != null) {
+      setState(() {
+        _image = File(path);
+      });
+    }
   }
 
   @override
