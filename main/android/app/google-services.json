@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "918251788765",
+    "project_id": "recipewise-c2a3f",
+    "storage_bucket": "recipewise-c2a3f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918251788765:android:b66cbb41646ed65f9dfe34",
+        "android_client_info": {
+          "package_name": "com.recipewise.main"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw449FyQzTZboz3HUP5q8MzA9NvaUr2mk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,13 +6,16 @@ import 'Lista.dart';
 import 'PrimeiraTela.dart';
 import 'Receitas.dart';
 import 'Perfil.dart';
-import 'Publicar.dart';
+import 'CriarReceita/Publicar.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 List<Map<String, dynamic>> listaDeCompras = [];
 final GlobalKey<_InicioState> _inicioKey = GlobalKey<_InicioState>();
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Inicio(key: _inicioKey),
