@@ -13,6 +13,8 @@ import 'package:firebase_core/firebase_core.dart';
 List<Map<String, dynamic>> listaDeCompras = [];
 final GlobalKey<_InicioState> _inicioKey = GlobalKey<_InicioState>();
 
+
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

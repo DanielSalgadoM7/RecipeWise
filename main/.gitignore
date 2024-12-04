@@ -43,4 +43,4 @@ app.*.map.json
 /android/app/release
 
 # Ignorar o arquivo de configuração do Firebase no Android
-android/app/google-services.json
+/android/app/google-services.json
