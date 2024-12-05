@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main.dart'; // Importar o arquivo principal para acessar a lista global
+import '../main.dart'; // Importar o arquivo principal para acessar a lista global
 
 String usuario = "Usuário";
 

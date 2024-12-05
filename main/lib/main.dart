@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:main/TelaBloqueio.dart';
-import 'Lista.dart';
-import 'PrimeiraTela.dart';
-import 'Receitas.dart';
-import 'Perfil.dart';
-import 'CriarReceita/Publicar.dart';
+import 'package:main/pages/TelaBloqueio.dart';
+import 'pages/Lista.dart';
+import 'pages/PrimeiraTela.dart';
+import 'pages/Receitas.dart';
+import 'pages/Perfil.dart';
+import 'pages/CriarReceita/Publicar.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 

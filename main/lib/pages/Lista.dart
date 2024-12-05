@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'CriarListaScreen.dart';
 import 'DetalhesListaScreen.dart';
-import 'SqlHelper/Lista_SQLHelper.dart';
+import '../services/SqlHelper/Lista_SQLHelper.dart';
 
 class ListaScreen extends StatefulWidget {
   @override

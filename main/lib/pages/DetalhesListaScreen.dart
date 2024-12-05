@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'SqlHelper/Lista_SQLHelper.dart'; // Importe seu SQLHelper
+import '../services/SqlHelper/Lista_SQLHelper.dart'; // Importe seu SQLHelper
 
 class DetalheListaScreen extends StatefulWidget {
   final Map<String, dynamic> lista;

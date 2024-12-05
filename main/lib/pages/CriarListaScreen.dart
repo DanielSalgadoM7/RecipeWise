@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'SqlHelper/Lista_SQLHelper.dart';
+import '../services/SqlHelper/Lista_SQLHelper.dart';
 
 class CriarListaScreen extends StatefulWidget {
   final Function(Map<String, dynamic>) onListaCriada;
