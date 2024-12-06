@@ -54,11 +54,32 @@ class UsuarioSQLHelper {
     return resultado.isNotEmpty ? resultado.first : null;
   }
 
+  static Future<Map<String, dynamic>?> getUsuarioById(int id) async {
+    final db = await UsuarioSQLHelper.db();
+    final resultado = await db.query(
+      'usuarios',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+    return resultado.isNotEmpty ? resultado.first : null;
+  }
+
   static Future<int> createUsuario(String nome, String email, String senha, String foto) async {
     final db = await UsuarioSQLHelper.db();
     final dados = {'nome': nome, 'email': email,'senha': senha, 'foto': foto};
     final id = await db.insert('usuarios', dados,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
+  }
+
+  static Future<int> updateUsuario(int id, String nome, String email, String foto) async {
+    final db = await UsuarioSQLHelper.db();
+    final dados = {
+      'nome': nome,
+      'email' : email,
+      'foto': foto
+    };
+    return db.update('usuarios', dados, where: "id = ?", whereArgs: [id]);
   }
 }

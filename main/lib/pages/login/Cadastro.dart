@@ -35,11 +35,11 @@ class Cadastro extends StatelessWidget {
         await AuthService.login(id);
 
         // Redireciona para a PrimeiraTela
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => Inicio()),
+          MaterialPageRoute(builder: (context) => Inicio(userId: id)),
+              (Route<dynamic> route) => false, // Retorna false para remover todas as rotas anteriores
         );
-
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

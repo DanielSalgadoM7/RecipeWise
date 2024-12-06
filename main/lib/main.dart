@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:main/services/AuthService.dart';
+import 'package:main/services/SqlHelper/Usuario_SqlHelper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/login/TelaBloqueio.dart';
 import 'pages/Lista.dart';
 import 'pages/Home/PrimeiraTela.dart';
 import 'pages/Receitas.dart';
-import 'pages/Perfil.dart';
+import 'pages/Perfil/Perfil.dart';
 import 'pages/CriarReceita/Publicar.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,26 +15,33 @@ import 'package:firebase_core/firebase_core.dart';
 List<Map<String, dynamic>> listaDeCompras = [];
 final GlobalKey<_InicioState> _inicioKey = GlobalKey<_InicioState>();
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   // Verifica se o usuário está logado
-  final bool isLoggedIn = await AuthService.isUserLogged();
+  final isLoggedIn = await AuthService.isUserLogged();
+  final userId = isLoggedIn ? await AuthService.getUserId() : null;
 
-  runApp(MyApp(isLoggedIn: isLoggedIn));
+  runApp(MyApp(
+    isLoggedIn: isLoggedIn,
+    userId: userId,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final bool isLoggedIn;
+  final int? userId;
 
-  const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
+  const MyApp({Key? key, required this.isLoggedIn, this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: isLoggedIn ? Inicio(key: _inicioKey) : Telabloqueio(),  // A tela inicial agora é sempre PrimeiraTela
+      home: isLoggedIn
+          ? Inicio(userId: userId!) // Passa o userId para o widget Inicio
+          : Telabloqueio(),
       routes: {
         '/perfil': (context) => Perfil(),
       },
@@ -41,8 +49,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
 class Inicio extends StatefulWidget {
-  Inicio({Key? key}) : super(key: key);
+  final int userId;
+
+  const Inicio({Key? key, required this.userId}) : super(key: key);
 
   @override
   _InicioState createState() => _InicioState();
@@ -51,9 +62,10 @@ class Inicio extends StatefulWidget {
 class _InicioState extends State<Inicio> {
   int _indiceAtual = 0;
   File? _profileImage;
+  String usuario = 'Carregando...';
 
   final List<Widget> _telas = [
-    PrimeiraTela(),  // Sempre carrega PrimeiraTela
+    PrimeiraTela(), // Sempre carrega PrimeiraTela
     Publicar(),
     Receitas(),
     ListaScreen(),
@@ -62,7 +74,16 @@ class _InicioState extends State<Inicio> {
   @override
   void initState() {
     super.initState();
+    _loadUsuario();
     _loadProfileImage();
+  }
+
+
+  Future<void> _loadUsuario() async {
+   var user = await UsuarioSQLHelper.getUsuarioById(widget.userId);
+    setState(() {
+      usuario = user != null ? user['nome'] : 'Usuário desconhecido';
+    });
   }
 
   Future<void> _loadProfileImage() async {
@@ -83,8 +104,6 @@ class _InicioState extends State<Inicio> {
 
   @override
   Widget build(BuildContext context) {
-    String usuario = "Usuário";
-
     return Scaffold(
       appBar: AppBar(
         title: InkWell(

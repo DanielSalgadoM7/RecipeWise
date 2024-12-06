@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../main.dart';
 import '../../services/SqlHelper/Usuario_SqlHelper.dart'; // Importe a classe UsuarioSQLHelper
-import '../Perfil.dart'; // Importe a tela de perfil
+import '../Perfil/Perfil.dart'; // Importe a tela de perfil
+import '../../services/AuthService.dart';
 
 class Login extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -21,10 +23,13 @@ class Login extends StatelessWidget {
     // Consultar o banco para verificar o login
     final usuario = await UsuarioSQLHelper.getUsuarioByEmailSenha(email, senha);
     if (usuario != null) {
-      // Login bem-sucedido, navega para a tela de perfil
-      Navigator.pushReplacement(
+      await AuthService.login(usuario['id']);
+
+      // Redireciona para a PrimeiraTela
+      Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => Perfil()), // Tela para onde o usuário será redirecionado
+        MaterialPageRoute(builder: (context) => Inicio(userId: usuario['id'])),
+            (Route<dynamic> route) => false, // Retorna false para remover todas as rotas anteriores
       );
     } else {
       // Mostrar mensagem de erro se o login falhar
@@ -113,3 +118,4 @@ class Login extends StatelessWidget {
     );
   }
 }
+
