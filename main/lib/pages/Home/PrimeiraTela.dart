@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import '../main.dart';
-import 'Lista.dart';
-import 'TelaBusca.dart';
-import 'FavoritosTela.dart';
-import 'TelaBloqueio.dart';
-import 'Receitas.dart'; // Certifique-se de que o arquivo Receitas.dart esteja importado corretamente
-import 'DicasTela.dart';
-import 'CategoriasTela.dart';
-import '../services/SqlHelper/Lista_SQLHelper.dart'; // Importe o helper do banco de dados
+import '../../main.dart';
+import '../Lista.dart';
+import '../TelaBusca.dart';
+import '../FavoritosTela.dart';
+import '../login/TelaBloqueio.dart';
+import '../Receitas.dart'; // Certifique-se de que o arquivo Receitas.dart esteja importado corretamente
+import '../DicasTela.dart';
+import '../CategoriasTela.dart';
+import '../../services/SqlHelper/Lista_SQLHelper.dart'; // Importe o helper do banco de dados
 
 int _paginaAtual = 0; // Controla qual tela será exibida
 

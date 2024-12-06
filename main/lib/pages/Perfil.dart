@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'TelaBloqueio.dart';
+import 'login/TelaBloqueio.dart';
 
 class Perfil extends StatefulWidget {
   @override

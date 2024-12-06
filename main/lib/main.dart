@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:main/services/AuthService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:main/pages/TelaBloqueio.dart';
+import 'pages/login/TelaBloqueio.dart';
 import 'pages/Lista.dart';
-import 'pages/PrimeiraTela.dart';
+import 'pages/Home/PrimeiraTela.dart';
 import 'pages/Receitas.dart';
 import 'pages/Perfil.dart';
 import 'pages/CriarReceita/Publicar.dart';
@@ -13,43 +14,46 @@ import 'package:firebase_core/firebase_core.dart';
 List<Map<String, dynamic>> listaDeCompras = [];
 final GlobalKey<_InicioState> _inicioKey = GlobalKey<_InicioState>();
 
-
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Inicio(key: _inicioKey),
-  ));
-}
 
-class Inicio extends StatefulWidget {
-  Inicio({Key? key}) : super(key: key);
-  @override
-  _InicioState createState() => _InicioState();
+  // Verifica se o usuário está logado
+  final bool isLoggedIn = await AuthService.isUserLogged();
+
+  runApp(MyApp(isLoggedIn: isLoggedIn));
 }
 
 class MyApp extends StatelessWidget {
+  final bool isLoggedIn;
+
+  const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Meu App',
-      initialRoute: '/',
+      debugShowCheckedModeBanner: false,
+      home: isLoggedIn ? Inicio(key: _inicioKey) : Telabloqueio(),  // A tela inicial agora é sempre PrimeiraTela
       routes: {
-        '/': (context) => PrimeiraTela(),
-        '/telabloqueio': (context) => Telabloqueio(),
+        '/perfil': (context) => Perfil(),
       },
     );
   }
 }
 
+class Inicio extends StatefulWidget {
+  Inicio({Key? key}) : super(key: key);
+
+  @override
+  _InicioState createState() => _InicioState();
+}
+
 class _InicioState extends State<Inicio> {
   int _indiceAtual = 0;
-  File? _profileImage; // Variável para armazenar a imagem do perfil
+  File? _profileImage;
 
   final List<Widget> _telas = [
-    PrimeiraTela(),
+    PrimeiraTela(),  // Sempre carrega PrimeiraTela
     Publicar(),
     Receitas(),
     ListaScreen(),
@@ -58,7 +62,7 @@ class _InicioState extends State<Inicio> {
   @override
   void initState() {
     super.initState();
-    _loadProfileImage(); // Carrega a imagem do perfil ao iniciar
+    _loadProfileImage();
   }
 
   Future<void> _loadProfileImage() async {
@@ -74,12 +78,6 @@ class _InicioState extends State<Inicio> {
   void onTabTapped(int index) {
     setState(() {
       _indiceAtual = index;
-    });
-  }
-
-  void mudarParaReceitas() {
-    setState(() {
-      _indiceAtual = 2;
     });
   }
 
@@ -104,7 +102,7 @@ class _InicioState extends State<Inicio> {
             ),
           ),
         ),
-        backgroundColor: Color(0xFF942B2B),
+        backgroundColor: const Color(0xFF942B2B),
         actions: [
           Row(
             children: [
@@ -112,7 +110,7 @@ class _InicioState extends State<Inicio> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
                   "Olá, $usuario!",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                   ),
@@ -127,19 +125,19 @@ class _InicioState extends State<Inicio> {
                       shape: BoxShape.circle,
                       color: Colors.white,
                       border: Border.all(
-                          color: Color(0xFF942B2B), width: 2),
+                          color: const Color(0xFF942B2B), width: 2),
                     ),
                     child: Center(
                       child: _profileImage != null
                           ? ClipOval(
                         child: Image.file(
                           _profileImage!,
-                          width: 50, // Largura da imagem de perfil
-                          height: 70, // Altura da imagem de perfil
-                          fit: BoxFit.cover, // Ajusta a imagem para cobrir o espaço
+                          width: 50,
+                          height: 70,
+                          fit: BoxFit.cover,
                         ),
                       )
-                          : Icon(
+                          : const Icon(
                         Icons.person,
                         color: Color(0xFF942B2B),
                         size: 30,
@@ -148,11 +146,7 @@ class _InicioState extends State<Inicio> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Perfil()),
-                  ).then((_) {
-                    // Atualiza a imagem de perfil ao retornar para a tela inicial
+                  Navigator.pushNamed(context, '/perfil').then((_) {
                     _loadProfileImage();
                   });
                 },
@@ -162,11 +156,10 @@ class _InicioState extends State<Inicio> {
         ],
       ),
       body: _telas[_indiceAtual],
-
       bottomNavigationBar: ConvexAppBar(
         style: TabStyle.react,
-        backgroundColor: Color(0xFF942B2B),
-        items: [
+        backgroundColor: const Color(0xFF942B2B),
+        items: const [
           TabItem(icon: Icons.home, title: "Início"),
           TabItem(icon: Icons.add_circle, title: "Publicar"),
           TabItem(icon: Icons.fastfood, title: "Receitas"),

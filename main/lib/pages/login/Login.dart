@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
-import '../services/SqlHelper/Usuario_SqlHelper.dart'; // Importe a classe UsuarioSQLHelper
+import '../../services/SqlHelper/Usuario_SqlHelper.dart'; // Importe a classe UsuarioSQLHelper
+import '../Perfil.dart'; // Importe a tela de perfil
 
-class TelaCadastro extends StatelessWidget {
-  final TextEditingController nomeController = TextEditingController();
+class Login extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController senhaController = TextEditingController();
 
-  void cadastrarUsuario(BuildContext context) async {
-    String nome = nomeController.text.trim();
+  void fazerLogin(BuildContext context) async {
     String email = emailController.text.trim();
     String senha = senhaController.text.trim();
 
     // Verificar se os campos estão preenchidos
-    if (nome.isEmpty || email.isEmpty || senha.isEmpty) {
+    if (email.isEmpty || senha.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Por favor, preencha todos os campos')),
       );
       return;
     }
 
-    try {
-      // Chamar o método createUsuario
-      int id = await UsuarioSQLHelper.createUsuario(nome, email, senha, '');
-      if (id > 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Cadastro realizado com sucesso!')),
-        );
-        Navigator.pop(context); // Voltar para a tela anterior
-      }
-    } catch (e) {
+    // Consultar o banco para verificar o login
+    final usuario = await UsuarioSQLHelper.getUsuarioByEmailSenha(email, senha);
+    if (usuario != null) {
+      // Login bem-sucedido, navega para a tela de perfil
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Perfil()), // Tela para onde o usuário será redirecionado
+      );
+    } else {
+      // Mostrar mensagem de erro se o login falhar
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao cadastrar usuário: ${e.toString()}')),
+        SnackBar(content: Text('E-mail ou senha incorretos')),
       );
     }
   }
@@ -63,22 +62,11 @@ class TelaCadastro extends StatelessWidget {
           children: [
             SizedBox(height: 100),
             Text(
-              "Cadastro de Usuário",
+              "Entrar no App",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20),
-            TextField(
-              controller: nomeController,
-              decoration: InputDecoration(
-                labelText: 'Nome',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                prefixIcon: Icon(Icons.person),
-              ),
-            ),
-            SizedBox(height: 10),
             TextField(
               controller: emailController,
               decoration: InputDecoration(
@@ -105,7 +93,7 @@ class TelaCadastro extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => cadastrarUsuario(context),
+                onPressed: () => fazerLogin(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
@@ -114,7 +102,7 @@ class TelaCadastro extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  "CADASTRAR",
+                  "ENTRAR",
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),

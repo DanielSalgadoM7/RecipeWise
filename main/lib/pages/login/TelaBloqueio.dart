@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'TelaCadastro.dart';  // Importe a tela de cadastro
-import 'TelaLogin.dart';     // Importe a tela de login
+import 'Cadastro.dart';  // Importe a tela de cadastro
+import 'Login.dart';     // Importe a tela de login
 
 class Telabloqueio extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +57,7 @@ class Telabloqueio extends StatelessWidget {
                   // Navegar para a tela de cadastro
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TelaCadastro()),
+                    MaterialPageRoute(builder: (context) => Cadastro()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -82,7 +83,7 @@ class Telabloqueio extends StatelessWidget {
                   // Navegar para a tela de login
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TelaLogin()),
+                    MaterialPageRoute(builder: (context) => Login()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
