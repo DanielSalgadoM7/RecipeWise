@@ -1,0 +1,38 @@
+name: main
+description: "Um aplicativo para achar e compartilhar receitas e fazer sua lista de compras."
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.5.3 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: ^2.2.7
+  path: ^1.8.3
+  image_picker: ^1.1.2
+  shared_preferences: ^2.1.0
+  stylish_bottom_bar: ^1.1.0
+  convex_bottom_bar: ^3.2.0
+  url_launcher: ^6.1.9
+  cupertino_icons: ^1.0.8
+  firebase_core: 3.8.1
+  flutter_dotenv: ^5.0.2
+  sqflite_common_ffi: ^2.3.4+4
+  sqflite_common_ffi_web: ^0.4.5+4
+  firebase_auth: 5.3.4
+  cloud_firestore: ^5.5.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/images/

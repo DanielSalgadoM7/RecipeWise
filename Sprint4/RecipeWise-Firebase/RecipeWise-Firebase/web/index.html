@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="$FLUTTER_BASE_HREF" />
+
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta
+      name="description"
+      content="Um aplicativo para achar e compartilhar receitas e fazer sua lista de compras."
+    />
+
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="main" />
+    <link rel="apple-touch-icon" href="icons/Icon-192.png" />
+
+    <script type="module">
+      // Importações do Firebase
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+      // Configuração do Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyBPIwU1ww_vXT7rngAN6B2m18x1v5rLrwY",
+        authDomain: "recipewise-c2a3f.firebaseapp.com",
+        projectId: "recipewise-c2a3f",
+        storageBucket: "recipewise-c2a3f.firebasestorage.app",
+        messagingSenderId: "918251788765",
+        appId: "1:918251788765:web:f2bcf5060777f5be9dfe34",
+        measurementId: "G-QCC196F1HV",
+      };
+
+      // Inicialize o Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <title>main</title>
+    <link rel="manifest" href="manifest.json" />
+  </head>
+  <body>
+    <script src="flutter_bootstrap.js" async></script>
+  </body>
+</html>
